@@ -1,0 +1,8 @@
+﻿  p7q1.cpp
+C:\Users\JT\source\repos\Practical 07\Practical 07\p7q1.cpp(13,32): warning C4305: 'initializing': truncation from 'double' to 'GLfloat'
+C:\Users\JT\source\repos\Practical 07\Practical 07\p7q1.cpp(14,32): warning C4305: 'initializing': truncation from 'double' to 'GLfloat'
+C:\Users\JT\source\repos\Practical 07\Practical 07\p7q1.cpp(15,32): warning C4305: 'initializing': truncation from 'double' to 'GLfloat'
+C:\Users\JT\source\repos\Practical 07\Practical 07\p7q1.cpp(94,3): warning C4129: '.': unrecognized character escape sequence
+C:\Users\JT\source\repos\Practical 07\Practical 07\p7q1.cpp(94,3): warning C4129: 'D': unrecognized character escape sequence
+C:\Users\JT\source\repos\Practical 07\Practical 07\p7q1.cpp(94,3): warning C4129: 'B': unrecognized character escape sequence
+  Practical 07.vcxproj -> C:\Users\JT\source\repos\Practical 07\Debug\Practical 07.exe
