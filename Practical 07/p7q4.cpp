@@ -3,7 +3,9 @@
 #include <gl/GLU.h>
 #include <iostream>
 #include <conio.h>
+#include <math.h>
 #include <string>
+#define PI 3.1415927
 
 #pragma comment (lib, "OpenGL32.lib")
 #pragma comment (lib, "GLU32.lib")
@@ -196,11 +198,57 @@ void drawConeRoof(const GLfloat(&trans)[3]) {
 
 void drawPyramidRoof(const GLfloat(&trans)[3]) {
 	float points[8][3] = {
-		{ 0.2f, 0, 0.2f }, // A [0][]
-		{ -0.2f, 0, 0.2f }, // B [1][]
-		{ -0.2f, 0, -0.2f }, // C [2][]
-		{ 0.2f, 0, -0.2f }, // D [3][]
-		{ 0, 0.2f, 0 }, // E [4][]
+		{ 0.12f, 0, 0.15f }, // A [0][]
+		{ -0.12f, 0, 0.15f }, // B [1][]
+		{ -0.12f, 0, -0.15f }, // C [2][]
+		{ 0.12f, 0, -0.15f }, // D [3][]
+		{ 0, 0.45f, 0 }, // E [4][]
+	};
+
+	glPushMatrix();
+	glTranslatef(trans[0], trans[1], trans[2]);
+	glBegin(GL_QUADS);
+
+	// Bottom (ABCD)
+	glVertex3f(points[0][0], points[0][1], points[0][2]);
+	glVertex3f(points[1][0], points[1][1], points[1][2]);
+	glVertex3f(points[2][0], points[2][1], points[2][2]);
+	glVertex3f(points[3][0], points[3][1], points[3][2]);
+
+	// Left (BCE)
+	glVertex3f(points[1][0], points[1][1], points[1][2]);
+	glVertex3f(points[2][0], points[2][1], points[2][2]);
+	glVertex3f(points[4][0], points[4][1], points[4][2]);
+
+	// Back (CDE)
+	glVertex3f(points[2][0], points[2][1], points[2][2]);
+	glVertex3f(points[3][0], points[3][1], points[3][2]);
+	glVertex3f(points[4][0], points[4][1], points[4][2]);
+
+	// Right (DAE)
+	glVertex3f(points[3][0], points[3][1], points[3][2]);
+	glVertex3f(points[0][0], points[0][1], points[0][2]);
+	glVertex3f(points[4][0], points[4][1], points[4][2]);
+
+	// Front (ABE)
+	glVertex3f(points[0][0], points[0][1], points[0][2]);
+	glVertex3f(points[1][0], points[1][1], points[1][2]);
+	glVertex3f(points[2][0], points[2][1], points[2][2]);
+
+	glEnd();
+	glPopMatrix();
+}
+
+void drawMainTowerCube(const GLfloat(&trans)[3]) {
+	float points[8][3] = {
+		{ 0.1f, 0.3f, 0.15f }, // A [0][]
+		{ 0.1f, -0.3f, 0.15f }, // B [1][]
+		{ -0.1f, -0.3f, 0.15f }, // C [2][]
+		{ -0.1f, 0.3f, 0.15f }, // D [3][]
+		{ 0.1f, 0.3f, -0.15f }, // E [4][]
+		{ 0.1f, -0.3f, -0.15f }, // F [5][]
+		{ -0.1f, -0.3f, -0.15f }, // G [6][]
+		{ -0.1f, 0.3f, -0.15f }, // H [7][]
 	};
 
 	glPushMatrix();
@@ -212,25 +260,379 @@ void drawPyramidRoof(const GLfloat(&trans)[3]) {
 	glVertex3f(points[1][0], points[1][1], points[1][2]);
 	glVertex3f(points[2][0], points[2][1], points[2][2]);
 	glVertex3f(points[3][0], points[3][1], points[3][2]);
+	// Back (EFGH)
+	glVertex3f(points[4][0], points[4][1], points[4][2]);
+	glVertex3f(points[5][0], points[5][1], points[5][2]);
+	glVertex3f(points[6][0], points[6][1], points[6][2]);
+	glVertex3f(points[7][0], points[7][1], points[7][2]);
 
-	// Left
+	glEnd();
+	glPopMatrix();
 
-	// Back
 
-	// Right
 
-	// Bottom
+	glPushMatrix();
+	glTranslatef(trans[0], trans[1], trans[2]);
+	glBegin(GL_QUADS);
+
+	// Left (CDGH)
+	glVertex3f(points[2][0], points[2][1], points[2][2]);
+	glVertex3f(points[3][0], points[3][1], points[3][2]);
+	glVertex3f(points[6][0], points[6][1], points[6][2]);
+	glVertex3f(points[7][0], points[7][1], points[7][2]);
+	// Right (ABFE)
+	glVertex3f(points[0][0], points[0][1], points[0][2]);
+	glVertex3f(points[1][0], points[1][1], points[1][2]);
+	glVertex3f(points[5][0], points[5][1], points[5][2]);
+	glVertex3f(points[4][0], points[4][1], points[4][2]);
+
+	glEnd();
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(trans[0], trans[1], trans[2]);
+	glBegin(GL_QUADS);
+
+	// Top (ADHE)
+	glVertex3f(points[0][0], points[0][1], points[0][2]);
+	glVertex3f(points[3][0], points[3][1], points[3][2]);
+	glVertex3f(points[7][0], points[7][1], points[7][2]);
+	glVertex3f(points[4][0], points[4][1], points[4][2]);
+	// Bottom (BCGF)
+	glVertex3f(points[1][0], points[2][1], points[2][2]);
+	glVertex3f(points[2][0], points[3][1], points[3][2]);
+	glVertex3f(points[6][0], points[6][1], points[6][2]);
+	glVertex3f(points[5][0], points[7][1], points[7][2]);
 
 	glEnd();
 	glPopMatrix();
 }
 
-void drawBuildingCube(const GLfloat(&trans)[3]) {
+void drawMainTowerBridge(const GLfloat(&trans)[3]) {
+	float points[8][3] = {
+		{ 0.2f, 0.01f, 0.01f }, // A [0][]
+		{ 0.2f, -0.01f, 0.01f }, // B [1][]
+		{ -0.2f, -0.01f, 0.01f }, // C [2][]
+		{ -0.2f, 0.01f, 0.01f }, // D [3][]
+		{ 0.2f, 0.01f, -0.01f }, // E [4][]
+		{ 0.2f, -0.01f, -0.01f }, // F [5][]
+		{ -0.2f, -0.01f, -0.01f }, // G [6][]
+		{ -0.2f, 0.01f, -0.01f }, // H [7][]
+	};
 
+	glPushMatrix();
+	glTranslatef(trans[0], trans[1], trans[2]);
+	glBegin(GL_QUADS);
+
+	// Front (ABCD)
+	glVertex3f(points[0][0], points[0][1], points[0][2]);
+	glVertex3f(points[1][0], points[1][1], points[1][2]);
+	glVertex3f(points[2][0], points[2][1], points[2][2]);
+	glVertex3f(points[3][0], points[3][1], points[3][2]);
+	// Back (EFGH)
+	glVertex3f(points[4][0], points[4][1], points[4][2]);
+	glVertex3f(points[5][0], points[5][1], points[5][2]);
+	glVertex3f(points[6][0], points[6][1], points[6][2]);
+	glVertex3f(points[7][0], points[7][1], points[7][2]);
+
+	glEnd();
+	glPopMatrix();
+
+
+
+	glPushMatrix();
+	glTranslatef(trans[0], trans[1], trans[2]);
+	glBegin(GL_QUADS);
+
+	// Left (CDGH)
+	glVertex3f(points[2][0], points[2][1], points[2][2]);
+	glVertex3f(points[3][0], points[3][1], points[3][2]);
+	glVertex3f(points[6][0], points[6][1], points[6][2]);
+	glVertex3f(points[7][0], points[7][1], points[7][2]);
+	// Right (ABFE)
+	glVertex3f(points[0][0], points[0][1], points[0][2]);
+	glVertex3f(points[1][0], points[1][1], points[1][2]);
+	glVertex3f(points[5][0], points[5][1], points[5][2]);
+	glVertex3f(points[4][0], points[4][1], points[4][2]);
+
+	glEnd();
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(trans[0], trans[1], trans[2]);
+	glBegin(GL_QUADS);
+
+	// Top (ADHE)
+	glVertex3f(points[0][0], points[0][1], points[0][2]);
+	glVertex3f(points[3][0], points[3][1], points[3][2]);
+	glVertex3f(points[7][0], points[7][1], points[7][2]);
+	glVertex3f(points[4][0], points[4][1], points[4][2]);
+	// Bottom (BCGF)
+	glVertex3f(points[1][0], points[2][1], points[2][2]);
+	glVertex3f(points[2][0], points[3][1], points[3][2]);
+	glVertex3f(points[6][0], points[6][1], points[6][2]);
+	glVertex3f(points[5][0], points[7][1], points[7][2]);
+
+	glEnd();
+	glPopMatrix();
 }
 
-void drawBridge(const GLfloat(&trans)[3]) {
+void drawMainTowerSupport(const GLfloat(&trans)[3], const GLfloat(&rotateY)[4], GLfloat rotateZDeg1, GLfloat rotateZDeg2) {
+	GLUquadricObj* var = NULL;
+	
+	var = gluNewQuadric();
+	glPushMatrix();
+	glTranslatef(trans[0], trans[1], trans[2]);
+	glRotatef(rotateY[0], rotateY[1], rotateY[2], rotateY[3]);
+	gluQuadricDrawStyle(var, GLU_LINE);
+	// gluQuadricTexture(var, GL_TRUE);
+	gluCylinder(var, 0.001f, 0.001f, 0.4f, 32, 32);
+	glPopMatrix();
+	var = gluNewQuadric();
+	glPushMatrix();
+	glTranslatef(trans[0], trans[1] - 0.01f, trans[2]);
+	glRotatef(rotateY[0], rotateY[1], rotateY[2], rotateY[3]);
+	gluQuadricDrawStyle(var, GLU_LINE);
+	// gluQuadricTexture(var, GL_TRUE);
+	gluCylinder(var, 0.001f, 0.001f, 0.4f, 32, 32);
+	glPopMatrix();
 
+	var = gluNewQuadric();
+	glPushMatrix();
+	glTranslatef(trans[0], trans[1], trans[2]);
+	glRotatef(rotateZDeg1, 0, 0, 1);
+	glRotatef(rotateY[0], rotateY[1], rotateY[2], rotateY[3]);
+	gluQuadricDrawStyle(var, GLU_LINE);
+	// gluQuadricTexture(var, GL_TRUE);
+	gluCylinder(var, 0.001f, 0.001f, 0.4f, 32, 32);
+	glPopMatrix();
+
+	var = gluNewQuadric();
+	glPushMatrix();
+	glTranslatef(trans[0], trans[1] - 0.1f, trans[2]);
+	glRotatef(rotateZDeg2, 0, 0, 1);
+	glRotatef(rotateY[0], rotateY[1], rotateY[2], rotateY[3]);
+	gluQuadricDrawStyle(var, GLU_LINE);
+	// gluQuadricTexture(var, GL_TRUE);
+	gluCylinder(var, 0.001f, 0.001f, 0.4f, 32, 32);
+	glPopMatrix();
+
+	var = gluNewQuadric();
+	glPushMatrix();
+	glTranslatef(trans[0], trans[1] - 0.1f, trans[2]);
+	glRotatef(-90, 1, 0, 0);
+	gluQuadricDrawStyle(var, GLU_LINE);
+	// gluQuadricTexture(var, GL_TRUE);
+	gluCylinder(var, 0.001f, 0.001f, 0.1f, 32, 32);
+	glPopMatrix();
+	var = gluNewQuadric();
+	glPushMatrix();
+	glTranslatef(trans[0] - 0.01f, trans[1] - 0.1f, trans[2]);
+	glRotatef(-90, 1, 0, 0);
+	gluQuadricDrawStyle(var, GLU_LINE);
+	// gluQuadricTexture(var, GL_TRUE);
+	gluCylinder(var, 0.001f, 0.001f, 0.1f, 32, 32);
+	glPopMatrix();
+}
+
+void drawRoad(const GLfloat(&trans)[3]) {
+	float points[8][3] = {
+		{ 0.35f, 0.201f, 0.1f }, // A [0][]
+		{ 0.35f, -0.2f, 0.1f }, // B [1][]
+		{ -0.35f, -0.2f, 0.1f }, // C [2][]
+		{ -0.35f, 0.201f, 0.1f }, // D [3][]
+		{ 0.35f, 0.201f, -0.1f }, // E [4][]
+		{ 0.35f, -0.2f, -0.1f }, // F [5][]
+		{ -0.35f, -0.2f, -0.1f }, // G [6][]
+		{ -0.35f, 0.201f, -0.1f }, // H [7][]
+	};
+
+	glPushMatrix();
+	glTranslatef(trans[0], trans[1], trans[2]);
+	glBegin(GL_QUADS);
+
+	// Front (ABCD)
+	glVertex3f(points[0][0], points[0][1], points[0][2]);
+	glVertex3f(points[1][0], points[1][1], points[1][2]);
+	glVertex3f(points[2][0], points[2][1], points[2][2]);
+	glVertex3f(points[3][0], points[3][1], points[3][2]);
+	// Back (EFGH)
+	glVertex3f(points[4][0], points[4][1], points[4][2]);
+	glVertex3f(points[5][0], points[5][1], points[5][2]);
+	glVertex3f(points[6][0], points[6][1], points[6][2]);
+	glVertex3f(points[7][0], points[7][1], points[7][2]);
+
+	glEnd();
+	glPopMatrix();
+
+
+
+	glPushMatrix();
+	glTranslatef(trans[0], trans[1], trans[2]);
+	glBegin(GL_QUADS);
+
+	// Left (CDGH)
+	glVertex3f(points[2][0], points[2][1], points[2][2]);
+	glVertex3f(points[3][0], points[3][1], points[3][2]);
+	glVertex3f(points[6][0], points[6][1], points[6][2]);
+	glVertex3f(points[7][0], points[7][1], points[7][2]);
+	// Right (ABFE)
+	glVertex3f(points[0][0], points[0][1], points[0][2]);
+	glVertex3f(points[1][0], points[1][1], points[1][2]);
+	glVertex3f(points[5][0], points[5][1], points[5][2]);
+	glVertex3f(points[4][0], points[4][1], points[4][2]);
+
+	glEnd();
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(trans[0], trans[1], trans[2]);
+	glBegin(GL_QUADS);
+
+	// Top (ADHE)
+	glVertex3f(points[0][0], points[0][1], points[0][2]);
+	glVertex3f(points[3][0], points[3][1], points[3][2]);
+	glVertex3f(points[7][0], points[7][1], points[7][2]);
+	glVertex3f(points[4][0], points[4][1], points[4][2]);
+	// Bottom (BCGF)
+	glVertex3f(points[1][0], points[2][1], points[2][2]);
+	glVertex3f(points[2][0], points[3][1], points[3][2]);
+	glVertex3f(points[6][0], points[6][1], points[6][2]);
+	glVertex3f(points[5][0], points[7][1], points[7][2]);
+
+	glEnd();
+	glPopMatrix();
+}
+
+void drawRoadBridge(const GLfloat(&trans)[3], const GLfloat(&rotate)[4]) {
+	float points[8][3] = {
+		{ 0.15f, 0.025f, 0.1f }, // A [0][]
+		{ 0.15f, -0.025f, 0.1f }, // B [1][]
+		{ -0.15f, -0.025f, 0.1f }, // C [2][]
+		{ -0.15f, 0.025f, 0.1f }, // D [3][]
+		{ 0.15f, 0.025f, -0.1f }, // E [4][]
+		{ 0.15f, -0.025f, -0.1f }, // F [5][]
+		{ -0.15f, -0.025f, -0.1f }, // G [6][]
+		{ -0.15f, 0.025f, -0.1f }, // H [7][]
+	};
+
+	glPushMatrix();
+	glRotatef(rotate[0], rotate[1], rotate[2], rotate[3]);
+	glTranslatef(trans[0], trans[1], trans[2]);
+	glBegin(GL_QUADS);
+
+	// Front (ABCD)
+	glVertex3f(points[0][0], points[0][1], points[0][2]);
+	glVertex3f(points[1][0], points[1][1], points[1][2]);
+	glVertex3f(points[2][0], points[2][1], points[2][2]);
+	glVertex3f(points[3][0], points[3][1], points[3][2]);
+	// Back (EFGH)
+	glVertex3f(points[4][0], points[4][1], points[4][2]);
+	glVertex3f(points[5][0], points[5][1], points[5][2]);
+	glVertex3f(points[6][0], points[6][1], points[6][2]);
+	glVertex3f(points[7][0], points[7][1], points[7][2]);
+
+	glEnd();
+	glPopMatrix();
+
+
+
+	glPushMatrix();
+	glRotatef(rotate[0], rotate[1], rotate[2], rotate[3]);
+	glTranslatef(trans[0], trans[1], trans[2]);
+	glBegin(GL_QUADS);
+
+	// Left (CDGH)
+	glVertex3f(points[2][0], points[2][1], points[2][2]);
+	glVertex3f(points[3][0], points[3][1], points[3][2]);
+	glVertex3f(points[6][0], points[6][1], points[6][2]);
+	glVertex3f(points[7][0], points[7][1], points[7][2]);
+	// Right (ABFE)
+	glVertex3f(points[0][0], points[0][1], points[0][2]);
+	glVertex3f(points[1][0], points[1][1], points[1][2]);
+	glVertex3f(points[5][0], points[5][1], points[5][2]);
+	glVertex3f(points[4][0], points[4][1], points[4][2]);
+
+	glEnd();
+	glPopMatrix();
+
+	glPushMatrix();
+	glRotatef(rotate[0], rotate[1], rotate[2], rotate[3]);
+	glTranslatef(trans[0], trans[1], trans[2]);
+	glBegin(GL_QUADS);
+
+	// Top (ADHE)
+	glVertex3f(points[0][0], points[0][1], points[0][2]);
+	glVertex3f(points[3][0], points[3][1], points[3][2]);
+	glVertex3f(points[7][0], points[7][1], points[7][2]);
+	glVertex3f(points[4][0], points[4][1], points[4][2]);
+	// Bottom (BCGF)
+	glVertex3f(points[1][0], points[2][1], points[2][2]);
+	glVertex3f(points[2][0], points[3][1], points[3][2]);
+	glVertex3f(points[6][0], points[6][1], points[6][2]);
+	glVertex3f(points[5][0], points[7][1], points[7][2]);
+
+	glEnd();
+	glPopMatrix();
+}
+
+void drawRoadBridgeSupport(const GLfloat(&trans)[3], const GLfloat(&rotateX)[4], const GLfloat(&rotateY)[4]) {
+	GLUquadricObj* var = NULL;
+	var = gluNewQuadric();
+
+	glPushMatrix();
+	glTranslatef(trans[0], trans[1], trans[2]);
+	glRotatef(rotateY[0], rotateY[1], rotateY[2], rotateY[3]);
+	glRotatef(rotateX[0], rotateX[1], rotateX[2], rotateX[3]);
+	gluQuadricDrawStyle(var, GLU_LINE);
+	// gluQuadricTexture(var, GL_TRUE);
+	gluCylinder(var, 0.01f, 0.01f, 0.3f, 32, 32);
+	glPopMatrix();
+}
+
+void draw_cylinder(GLfloat radius, GLfloat height, GLubyte R, GLubyte G, GLubyte B)
+{
+	GLfloat w0, w1, ang0, ang1, angle, x, y, xb, yb, zb;
+	int i, j;
+
+	int     slices = 8;
+	GLfloat bend_radius = 1.0f;
+
+	GLfloat bend_angle, bend_ang0, bend_ang1;
+
+	bend_angle = bend_radius * height;
+	bend_ang0 = -bend_angle / 2.0f;
+	bend_ang1 = bend_angle / 2.0f;
+
+	for (i = 0; i < slices; i++)
+	{
+		w0 = (float)i / (float)slices;
+		w1 = (float)(i + 1) / (float)slices;
+
+		ang0 = bend_ang0 + (bend_ang1 - bend_ang0) * w0;
+		ang1 = bend_ang0 + (bend_ang1 - bend_ang0) * w1;
+
+		glColor3f(1.0f - w0, 0.0, w1);
+		glBegin(GL_QUAD_STRIP);
+
+		for (j = 0; j <= 360; ++j)
+		{
+			angle = PI * (float)j * PI / 180.0f;
+			x = radius * cos(angle) + bend_radius;
+			y = radius * sin(angle);
+
+			xb = sin(ang0) * x;
+			yb = y;
+			zb = cos(ang0) * x;
+			glVertex3f(xb, yb, zb);
+
+			xb = sin(ang1) * x;
+			yb = y;
+			zb = cos(ang1) * x;
+			glVertex3f(xb, yb, zb);
+		}
+		glEnd();
+	}
 }
 
 void display()
@@ -241,26 +643,53 @@ void display()
 	glEnable(GL_DEPTH_TEST);
 
 
-	drawBase({ -0.5f, -0.5f, 0 });
-	drawBase({ 0.5f, -0.5f, 0 });
-	
-	drawPillar({ -0.6f, 0.5f, 0.15f });
-	drawPillar({ -0.4f, 0.5f, 0.15f });
-	drawPillar({ -0.4f, 0.5f, -0.15f });
-	drawPillar({ -0.6f, 0.5f, -0.15f });
-	drawPillar({ 0.6f, 0.5f, 0.15f });
-	drawPillar({ 0.4f, 0.5f, 0.15f });
-	drawPillar({ 0.4f, 0.5f, -0.15f });
-	drawPillar({ 0.6f, 0.5f, -0.15f });
+	//drawBase({ -0.5f, -0.5f, 0 });
+	//drawBase({ 0.5f, -0.5f, 0 });
+	//
+	//drawPillar({ -0.6f, 0.5f, 0.15f });
+	//drawPillar({ -0.4f, 0.5f, 0.15f });
+	//drawPillar({ -0.4f, 0.5f, -0.15f });
+	//drawPillar({ -0.6f, 0.5f, -0.15f });
+	//drawPillar({ 0.6f, 0.5f, 0.15f });
+	//drawPillar({ 0.4f, 0.5f, 0.15f });
+	//drawPillar({ 0.4f, 0.5f, -0.15f });
+	//drawPillar({ 0.6f, 0.5f, -0.15f });
+	//
+	//drawMainTowerCube({ -0.5f, 0.2f, 0 });
+	//drawMainTowerCube({ 0.5f, 0.2f, 0 });
+	//
+	//drawMainTowerBridge({ -0.2f, 0.3f, 0.1f });
+	//drawMainTowerBridge({ 0.2f, 0.3f, 0.1f });
+	//drawMainTowerBridge({ -0.2f, 0.3f, -0.1f });
+	//drawMainTowerBridge({ 0.2f, 0.3f, -0.1f });
+	//
+	//drawMainTowerSupport({ 0, 0.4f, 0.1f }, { -90, 0, 1, 0 }, 12, -12);
+	//drawMainTowerSupport({ 0, 0.4f, 0.1f }, { 90, 0, 1, 0 }, -12, 12);
+	//drawMainTowerSupport({ 0, 0.4f, -0.1f }, { -90, 0, 1, 0 }, 12, -12);
+	//drawMainTowerSupport({ 0, 0.4f, -0.1f }, { 90, 0, 1, 0 }, -12, 12);
+	//
+	//drawConeRoof({ -0.6f, 0.7f, 0.15f });
+	//drawConeRoof({ -0.4f, 0.7f, 0.15f });
+	//drawConeRoof({ -0.4f, 0.7f, -0.15f });
+	//drawConeRoof({ -0.6f, 0.7f, -0.15f });
+	//drawConeRoof({ 0.6f, 0.7f, 0.15f });
+	//drawConeRoof({ 0.4f, 0.7f, 0.15f });
+	//drawConeRoof({ 0.4f, 0.7f, -0.15f });
+	//drawConeRoof({ 0.6f, 0.7f, -0.15f });
+	//
+	//drawPyramidRoof({ -0.5f, 0.5f, 0 });
+	//drawPyramidRoof({ 0.5f, 0.5f, 0 });
+	//
+	//drawRoad({ 0.65f, -0.5f, 0 });
+	//drawRoad({ -0.65f, -0.5f, 0 });
+	//
+	//drawRoadBridge({ -0.23f, -0.235f, 0 }, { 15, 0, 0, 1 });
+	//drawRoadBridge({ 0.23f, -0.235f, 0 }, { -15, 0, 0, 1 });
+	//
+	//drawRoadBridgeSupport({ -0.05f, -0.27f, 0 }, { 23, 1, 0, 0 }, { -90, 0, 1, 0 });
+	//drawRoadBridgeSupport({ 0.05f, -0.27f, 0 }, { 23, 1, 0, 0 }, { 90, 0, 1, 0 });
 
-	drawConeRoof({ -0.6f, 0.7f, 0.15f });
-	drawConeRoof({ -0.4f, 0.7f, 0.15f });
-	drawConeRoof({ -0.4f, 0.7f, -0.15f });
-	drawConeRoof({ -0.6f, 0.7f, -0.15f });
-	drawConeRoof({ 0.6f, 0.7f, 0.15f });
-	drawConeRoof({ 0.4f, 0.7f, 0.15f });
-	drawConeRoof({ 0.4f, 0.7f, -0.15f });
-	drawConeRoof({ 0.6f, 0.7f, -0.15f });
+	draw_cylinder(0.15, 1.0, 255, 160, 100);
 }
 
 //--------------------------------------------------------------------
