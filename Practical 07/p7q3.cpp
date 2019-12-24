@@ -70,6 +70,9 @@ bool initPixelFormat(HDC hdc)
 
 void initTexture(int pointer)
 {
+	glDisable(GL_TEXTURE_2D);
+	glDeleteTextures(1, &texture);
+
 	LPCSTR dir = "";
 	switch (pointer)
 	{
