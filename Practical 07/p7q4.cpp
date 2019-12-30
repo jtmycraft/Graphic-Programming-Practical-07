@@ -792,6 +792,20 @@ void display() {
 
 	// Draw Bridge
 	glPushMatrix();
+	initTexture("res/sky.bmp");
+	glScalef(10, 10, 10);
+	drawSphere();
+	glPopMatrix();
+
+	glPushMatrix();
+	initTexture("res/water.bmp");
+	glTranslatef(0, -0.5f, 0);
+	glScalef(10, 0.01f, 10);
+	drawCube();
+	glEnd();
+	glPopMatrix();
+
+	glPushMatrix();
 	glTranslatef(1.35f, 0, 0);
 	buildMainTower();
 	buildSubTowers();
